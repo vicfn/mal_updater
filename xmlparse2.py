@@ -1,5 +1,4 @@
-#!/usr/local/bin/python3
-#NEEDS PYTHON 3!
+#!/usr/bin/python
 
 import pickle
 import xml.etree.cElementTree as et
@@ -9,7 +8,6 @@ def parse_root(xml_tree):
 	for child in xml_tree:
 		if(child.tag=='anime'):
 			anime_series=parse_anime_entry(child)
-#			print(anime_series)
 			anime_list[anime_series['series_animedb_id']]=anime_series
 	print(anime_list)
 	return anime_list

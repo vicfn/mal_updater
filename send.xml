@@ -1,6 +1,3 @@
-#!/bin/bash
-
-cat > ./send.xml << SAMPLEXML
 data=<?xml version="1.0" encoding="UTF-8"?>
 <entry>
         <episode>4</episode>
@@ -20,19 +17,3 @@ data=<?xml version="1.0" encoding="UTF-8"?>
         <fansub_group></fansub_group>
         <tags></tags>
 </entry>
-SAMPLEXML
-
-echo "Username:"
-read username
-echo "Password:"
-stty -echo
-read password
-stty echo
-echo ""
-
-echo "Attempting to update $username's list..."
-#15085 = Amnesia
-curl http://myanimelist.net/api/animelist/update/15085.xml -u $username:$password -d @./send.xml 2>/dev/null >/dev/null
-sleep 10
-echo "Done."
-
