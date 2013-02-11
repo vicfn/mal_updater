@@ -2,30 +2,41 @@
 import subprocess
 import sys
 import PyQt4.QtGui as qtgui
+import xml.etree.cElementTree as et
 import pickle
 
 class Scroll(qtgui.QScrollArea):
 	main_window = None	
-	anime_list = None
+	anime_list = {}
 
 	def __init__(self):
 		super(Scroll, self).__init__()
 		self.setWidgetResizable(True)
 		self.main_window = MainWidget()
-		self.anime_list = None
+		self.anime_list = {} 
 
 	def createWindow(self):
-		#Get the parsed xml result from xmlparse2.py
-		subprocess.Popen(["./xmlparse2.py"], 
-					stdout=subprocess.PIPE, 
-					stderr=subprocess.PIPE).communicate()
-		xml_file = open("./xml-file.pickle", "rb")
-		self.anime_list = pickle.load(xml_file)
+		tree = et.parse('sample2.xml')
+		root = tree.getroot()
+		self.parse_root(root)
 
 		self.main_window.addAnimeList(self.anime_list)
 		self.setWidget(self.main_window)
 		self.show()
-	
+
+	def parse_root(self, xml_tree):
+		for child in xml_tree:
+			if(child.tag=='anime'):
+				anime_series = self.parse_anime_entry(child)
+				self.anime_list[anime_series['series_animedb_id']] = \
+					anime_series
+
+	def parse_anime_entry(self, anime_entry):
+		result = {}
+		for tag in anime_entry:
+			result[tag.tag] = tag.text
+		return result
+
 
 class MainWidget(qtgui.QWidget):
 	counter=0;
@@ -76,7 +87,6 @@ class MainWidget(qtgui.QWidget):
 	def debug(self):
 		self.addLine("Hello", "World!")
 		print("FLAGGED!")
-
 
 a = qtgui.QApplication(sys.argv)
 scroller = Scroll()
