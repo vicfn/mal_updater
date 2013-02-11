@@ -34,5 +34,6 @@ echo "Attempting to update $username's list..."
 #15085 = Amnesia
 curl http://myanimelist.net/api/animelist/update/15085.xml -u $username:$password -d @./send.xml 2>/dev/null >/dev/null
 sleep 10
+rm -f ./send.xml
 echo "Done."
 
