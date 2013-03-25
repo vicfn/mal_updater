@@ -5,6 +5,11 @@ import PyQt4.QtGui as qtgui
 import pickle
 import pycurl
 
+class series_data:
+	
+	def __init__(self):
+		
+
 def generateXML(xml_data_hash):
 	xmlstring='data=<?xml version="1.0" encoding="UTF-8"?>\n'
 	"	<entry>\n"
@@ -34,5 +39,8 @@ def generateXML(xml_data_hash):
 	"		<tags>",xml_data_hash['tags'],"</tags>\n"
 	"	</entry>"
 	return xmlstring
+xml_data_hash = { 'episode' : 24, 'status' : 'completed' }
+stri = generateXML(xml_data_hash)
+print(stri)
 
-curl_handle = pycurl.Curl()
+#curl_handle = pycurl.Curl()
